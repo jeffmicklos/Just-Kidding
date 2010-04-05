@@ -18,7 +18,7 @@ new JustKidding({
 		loop: true
 		});
 
-//Case 2:
+//Case 2: Populate function, like Twitter
 
 function viewmore(){
 	var el = new Element('div',{
