@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<script type="text/javascript" src="/js/mootools-1.2.4-core.js"></script>
+		<script type="text/javascript" src="/js/mootools-1.2.4.2-more.js"></script>
+		<script type="text/javascript" src="/js/class.justkidding.js"></script>
+		
+		<script type="text/javascript">
+		
+			window.addEvent('domready',function(){
+			
+				function viewmore(){
+					alert('adding!');
+					var el = new Element('div',{
+								'class': 'post',
+								'html': 'added'
+					}).inject(document.body);
+				}
+				
+				new JustKidding({
+							ar: $(document.body).getElements('.post'),
+							populate: viewmore
+						});
+				
+			});
+		
+		</script>
+		
+		<style type="text/css">
+		
+			.post{
+				height: 400px;
+				width: 600px;
+				background-color: #ff00ff;
+				margin: 200px 0;
+			}
+		
+		</style>
+		
+	</head>
+	
+	<body>
+			
+		<textarea></textarea>	
+		
+		<div class="post">0 awesome!</div>
+		<div class="post">1 awesome!</div>
+		<div class="post">2 awesome!</div>
+		<div class="post">3 awesome!</div>
+		<div class="post">4 awesome!</div>		
+		
+	</body>
+
+</html>
