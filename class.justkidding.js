@@ -7,7 +7,8 @@ var JustKidding = new Class({
 		ar: null,
 		populate: null,
 		keyEvent: 'keydown',
-		loop: false
+		loop: false,
+		key: null
 	},
 	
 	initialize: function(options){
@@ -21,7 +22,7 @@ var JustKidding = new Class({
 	
 	attachEvents: function(){
 		var that = this;
-		new Keyboard({
+		this.options.key = new Keyboard({
 		    defaultEventType: that.options.keyEvent, 
 		    active: true,
 		   	events: { 
@@ -35,20 +36,27 @@ var JustKidding = new Class({
 	toNext: function(){
 		
 		if(this.checkFocus){ //make sure that the user isn't focused on an input element
-		
-			if(this.options.ar[this.options.it] == null && this.options.loop == false){
+			
+			if(this.options.ar[this.options.it] == null && this.options.loop == false){ //we ran out of elements
 			
 				/*Case for adding elements*/
-				if(this.options.populate != null){
-					this.options.populate(); //user function to add more DOM elements
-					this.reparse(); //reparse DOM tree
+				if(this.options.populate != null){ //if there is a populate function defined
+					this.options.key.deactivate();
+					if(this.options.populate()){ //once we populate
+						if(this.reparse()){
+							new Fx.Scroll(window).toElement(this.options.ar[this.options.it]);
+							this.options.it = this.options.it + 1;
+							this.options.key.activate();
+							return;
+						}
+						return;
+					}
 				} 
 				else {
 					return false;
 				}
-				
+				return;
 			}
-			
 			/*Case for looping*/
 			if(this.options.ar[this.options.it] == null && this.options.loop == true) {
 				new Fx.Scroll(window).toElement(this.options.ar[0]);
@@ -71,6 +79,7 @@ var JustKidding = new Class({
 	
 	reparse: function(){
 		this.options.ar = $(document.body).getElements('.post');
+		return true;
 	},
 	
 	checkFocus: function() {
