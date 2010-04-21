@@ -8,19 +8,23 @@ var JustKidding = new Class({
 		populate: null,
 		keyEvent: 'keydown',
 		loop: false,
-		key: null
+		key: null,
+		selector: null
 	},
 	
 	initialize: function(options){
+	
 		if(options.populate != null && options.loop == true){
 			alert('either set a populate function or set looping, one or the other...');
 			return false;
 		}
 		this.setOptions(options); 
 		this.attachEvents();
+		
 	},
 	
 	attachEvents: function(){
+	
 		var that = this;
 		this.options.key = new Keyboard({
 		    defaultEventType: that.options.keyEvent, 
@@ -35,7 +39,7 @@ var JustKidding = new Class({
 	
 	toNext: function(){
 		
-		if(this.checkFocus){ //make sure that the user isn't focused on an input element
+		if(this.checkFocus()){ //make sure that the user isn't focused on an input element
 			
 			if(this.options.ar[this.options.it] == null && this.options.loop == false){ //we ran out of elements
 			
@@ -67,25 +71,33 @@ var JustKidding = new Class({
 			this.options.it = this.options.it + 1;
 		
 		}
+
 	},
 	
 	toPrev: function(){
 		
-		if(this.options.it != 1){ //?
-			new Fx.Scroll(window).toElement(this.options.ar[this.options.it-2]);
-			this.options.it = this.options.it - 1;
+		if(this.checkFocus()){
+			console.log(this.options.it);
+			if(this.options.it != 1 && this.options.it != 0){ //?
+				new Fx.Scroll(window).toElement(this.options.ar[this.options.it-2]);
+				this.options.it = this.options.it - 1;
+			}
+			
 		}
+		
 	},
 	
 	reparse: function(){
-		this.options.ar = $(document.body).getElements('.post');
+	
+		this.options.ar = $(document.body).getElements(this.options.selector);
 		return true;
+		
 	},
 	
 	checkFocus: function() {
 		
 		var curEl = document.activeElement.tagName;
-		
+				
 		if(curEl == 'TEXTAREA' || curEl == 'INPUT'){
 			return false;	
 		} else {
